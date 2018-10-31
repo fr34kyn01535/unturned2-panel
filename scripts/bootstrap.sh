@@ -1,0 +1,39 @@
+#!/bin/bash
+function package::update_steamcmd() {
+	if [ ! -d "/opt/steamcmd" ]; then
+		mkdir /opt/steamcmd
+        printf "Installing SteamCMD..\n"
+
+        wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz -O /opt/steamcmd/steamcmd.tar.gz
+        tar -xvzf /opt/steamcmd/steamcmd.tar.gz -C /opt/steamcmd
+        rm -f /opt/steamcmd/steamcmd.tar.gz
+	fi
+}
+
+function package::update_unturned() {
+	printf "Updating Unturned..\n"
+	package::get_steam_user
+	/opt/steamcmd/steamcmd.sh +login "${STEAM_USERNAME}" "${STEAM_PASSWORD}" +force_install_dir "/opt/unturned" +app_update 730200 +exit
+}
+
+function package::start_server() {
+	printf "Starting server..\n"
+	chmod 777 /opt/unturned/U4Server.sh
+	cd /opt/unturned/ && ./U4Server.sh
+}
+
+function package::get_steam_user() {
+	if [ -z ${STEAM_USERNAME+x} ]; then
+		printf "Error: STEAM_USERNAME not defined!\n";
+		exit
+	fi
+
+	if [ -z ${STEAM_PASSWORD+x} ]; then
+		printf "Error: STEAM_PASSWORD not defined!\n";
+		exit
+	fi
+}
+
+package::update_steamcmd
+package::update_unturned
+package::start_server
