@@ -14,6 +14,7 @@ function package::update_unturned() {
 	printf "Updating Unturned..\n"
 	package::get_steam_user
 	/opt/steamcmd/steamcmd.sh +login "${STEAM_USERNAME}" "${STEAM_PASSWORD}" +force_install_dir "/opt/unturned" +app_update 730200 +exit
+	
 }
 
 function package::start_server() {
@@ -36,4 +37,5 @@ function package::get_steam_user() {
 
 package::update_steamcmd
 package::update_unturned
+while : ; do . /opt/scripts/updateCheck.sh && sleep 30 ; done &
 package::start_server
