@@ -97,16 +97,14 @@ app.get('/api/config', function (req, res) {
                     title: "Home",
                     view: "home",
                     visible: true,
-                    children:[
-                        {
-                            id: "test",
-                            icon : "build",
-                            title: "Test",
-                            view: "test",
-                            visible: true
-                        }
-                    ]
                 },
+                {
+                    id: "test",
+                    icon : "build",
+                    title: "Test",
+                    view: "test",
+                    visible: true
+                }
             ],
         });
 });
@@ -123,7 +121,7 @@ io.on('connection', function (socket) {
 if(process.platform !== "win32"){
     const spawn = require('child_process').spawn;
     const readline = require('readline');
-    const prc = spawn('/opt/unturned/U4Server.sh',{cwd:"/opt/unturned/", shell:true});
+    const prc = spawn('/opt/unturned/U4Server.sh',['-rconport=3000'],{cwd:"/opt/unturned/", shell:true});
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout

@@ -19,7 +19,7 @@
     <link href="/style/style.css" rel="stylesheet">
 </head>
 
-<body class="theme-cyan" ng-cloak>
+<body class="theme-green" ng-cloak>
     <div class="page-loader-wrapper" ng-show="$root.finished">
         <div class="loader">
             <div class="preloader">
@@ -45,7 +45,7 @@
     </nav>
     <section>
         <aside id="leftsidebar" class="sidebar">
-            <div class="bg-cyan" style="box-shadow:4px 0px 4px 0px rgba(0, 0, 0, 0.5) inset">
+            <div class="bg-grey" style="box-shadow:4px 0px 4px 0px rgba(0, 0, 0, 0.5) inset">
                 <div class="row">
                     <div class="image col-xs-2">
                         <img ng-src="{{$root.profile.avatar}}" width="48" height="48" alt="User">
@@ -67,11 +67,12 @@
                             <i class="material-icons">{{ item.icon }}</i>
                             <span>{{ item.title}}</span>
                         </a>
-                        <ul class="ml-menu" ng-show="item.children.length">
+                        {{item.children.length}}
+                        <ul class="ml-menu" ng-show="item.children.length == 1">
                             <li ng-repeat="item2 in item.children" ng-show="item2.visible">
                                 <a href="" ng-click="$root.navigate(item2,[item])" ng-class="{'menu-toggle': item2.children.length}">
                                     <i class="material-icons">{{ item2.icon }}</i>
-                                    <span>{{ item2.title}}</span>
+                                    <span>{{ item2.title }}</span>
                                 </a>
                                 <ul class="ml-menu" ng-show="item2.children.length">
                                     <li ng-repeat="item3 in item2.children" ng-show="item3.visible">
@@ -97,10 +98,10 @@
         </aside>
     </section>
     <section class="content">
+        <ol class="breadcrumb breadcrumb-bg-green" ng-show="$root.breadcrumbs.length">
+            <li ng-repeat="item in $root.breadcrumbs"><a ng-click="$root.navigate(item,$root.breadcrumbs,true)" href=""><i class="material-icons">{{ item.icon }}</i> {{ item.title }}</a></li>
+        </ol>
         <div class="container-fluid">
-            <ol class="breadcrumb breadcrumb-bg-cyan" ng-show="$root.breadcrumbs.length">
-                <li ng-repeat="item in $root.breadcrumbs"><a ng-click="$root.navigate(item,$root.breadcrumbs,true)" href=""><i class="material-icons">{{ item.icon }}</i> {{ item.title }}</a></li>
-            </ol>
             <ng-view></ng-view>
         </div>
     </section>

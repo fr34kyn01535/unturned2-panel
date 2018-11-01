@@ -10,8 +10,8 @@ app.config(function ($mdThemingProvider,$locationProvider, $routeProvider, $cont
 
     $mdThemingProvider
         .theme('default')
-        .primaryPalette('green')
-        .accentPalette('darkgreen')
+        .primaryPalette('pink')
+        .accentPalette('orange')
         .warnPalette('red');
 
         $routeProvider.when('/login/:token', {
@@ -86,7 +86,7 @@ app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout', function (
             $rootScope.breadcrumbs = [$rootScope.currentMenuItem];
         }
         $rootScope.config.title = config.data.title;
-        $rootScope.loggedIn = (jwt !== null);
+        $rootScope.loggedIn = (jwt != null);
         if ($rootScope.loggedIn) {
             const session = JSON.parse(atob(jwt.split(".")[1]));
             eventing.connect();
