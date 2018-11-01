@@ -32,9 +32,9 @@ if(enableSSL){
 }
 
 
-if(!fs.existsSync("session.key"))
-    fs.writeFileSync("session.key",uuid.v4())
-const jtwSecret = fs.readFileSync("session.key", "utf8");
+if(!fs.existsSync("./session.key"))
+    fs.writeFileSync("./session.key",uuid.v4())
+const jtwSecret = fs.readFileSync("./session.key", "utf8");
 
 passport.use(new (require("passport-steam"))({
     returnURL:  address + '/api/auth',

@@ -19,7 +19,7 @@ function package::update_unturned() {
 function package::start_server() {
 	printf "Starting server..\n"
 	chmod 777 /opt/unturned/U4Server.sh
-	node /opt/panel/index.js
+	cd /opt/panel/ && node index.js
 }
 
 function package::get_steam_user() {
