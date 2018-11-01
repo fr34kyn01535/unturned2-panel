@@ -4,7 +4,6 @@ appinfo=$(/opt/steamcmd/steamcmd.sh +login anonymous +app_info_update 1 +app_inf
 newbuildid=$(echo $appinfo | pcregrep -o1 '\"public\"[\sa-z\"0-9{}]*\"timeupdated\"[\s]*\"([0-9]*)\"')
 if [ -z "$newbuildid" ];
 then
-    echo Error fetching update
     exit
 else
     if [ ! -e "/opt/buildid" ]; then

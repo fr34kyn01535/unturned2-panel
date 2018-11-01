@@ -1,0 +1,107 @@
+var app = angular.module('Unturned2', ['ngMaterial', 'ngRoute', 'angular-script.js', 'ngWebSocket']);
+app.config(function ($mdThemingProvider,$locationProvider, $routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
+    app.register = {
+        controller: $controllerProvider.register,
+        directive: $compileProvider.directive,
+        filter: $filterProvider.register,
+        factory: $provide.factory,
+        service: $provide.service
+    };
+
+    $mdThemingProvider
+        .theme('default')
+        .primaryPalette('green')
+        .accentPalette('darkgreen')
+        .warnPalette('red');
+
+        $routeProvider.when('/login/:token', {
+            templateUrl:function(rd){
+                localStorage.setItem("token",atob(rd.token));
+            },
+            redirectTo: function(){ return "home"; }
+        });
+        $routeProvider.when('/logout', {
+            templateUrl:function(rd){
+                localStorage.removeItem("token");
+            },
+            redirectTo: function(){ return "home"; }
+        });
+    
+    $routeProvider.when('/:view', {
+        templateUrl: function (rd) {
+            return '/views/' + rd.view + '/' + rd.view + '.html';
+        },
+        resolve: {
+            load: function ($q, $route, $rootScope, $script) {
+                var deferred = $q.defer();
+                var dependencies = [
+                    '/views/' + $route.current.params.view + '/' + $route.current.params.view + '.js'
+                ];
+
+                $script(dependencies, function () {
+                    $rootScope.$apply(function () {
+                        deferred.resolve();
+                    });
+                });
+
+                return deferred.promise;
+            }
+        }
+    });
+}).constant("$MD_THEME_CSS", "");
+
+app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout', function ($rootScope, config, eventing, $location, $timeout) {
+    $rootScope.currentMenuItem = {};
+    $rootScope.profile = { steamID: null, avatar: '/img/unknown.jpg', userName: "Guest" }
+    $rootScope.loggedIn = false;
+    $rootScope.breadcrumbs = [];
+    $rootScope.loading = true;
+    $rootScope.navigate = function (item, parents, keepBreadcrumbs) {
+        if (!item.view) return;
+        $rootScope.currentMenuItem = item;
+        if (!keepBreadcrumbs) {
+            $rootScope.breadcrumbs = parents || [];
+            $rootScope.breadcrumbs.push($rootScope.currentMenuItem);
+        }else if (parents){
+            var index = parents.indexOf(item);
+            if(index != -1){
+                $rootScope.breadcrumbs = parents.slice(0,index+1)
+            }
+        }
+        $location.path($rootScope.currentMenuItem.view);
+    }
+
+    $rootScope.config = { title: 'Unturned II Dashboard' };
+    config.then(function (config) {
+        var jwt = localStorage.getItem("token");
+        if (!$location.path() || $location.path() == "/") {
+            if (config.data.menuItems.length != 0) {
+                $rootScope.navigate(config.data.menuItems[0]);
+            }
+        } else {
+            $rootScope.currentMenuItem = config.data.menuItems.filter(m => "/" + m.ID == $location.path())[0];
+            if (!$rootScope.currentMenuItem){
+                $rootScope.currentMenuItem = config.data.menuItems[0];
+            }
+            $rootScope.breadcrumbs = [$rootScope.currentMenuItem];
+        }
+        $rootScope.config.title = config.data.title;
+        $rootScope.loggedIn = (jwt !== null);
+        if ($rootScope.loggedIn) {
+            const session = JSON.parse(atob(jwt.split(".")[1]));
+            eventing.connect();
+            eventing.emit("connected",jwt);
+            $rootScope.profile = session;
+        }
+
+        $(function () {
+            $.AdminBSB.browser.activate();
+            $.AdminBSB.leftSideBar.activate();
+            $.AdminBSB.navbar.activate();
+            $.AdminBSB.dropdownMenu.activate();
+            $.AdminBSB.input.activate();
+            $.AdminBSB.select.activate();
+            $rootScope.loading = false;
+        });
+    });
+}]);
