@@ -51,7 +51,7 @@
                           </md-list-item>
 
                     <md-list-item ng-repeat="item in vm.menu" ng-show="item.visible" ng-click="$root.navigate(item)">
-                        <md-icon ng-bind="{{ item.icon }}"></md-icon>
+                        <md-icon ng-bind="item.icon"></md-icon>
                         <p>{{ item.title}}</p>
                     </md-list-item>
               </md-list> 
