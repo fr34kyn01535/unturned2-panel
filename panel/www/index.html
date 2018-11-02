@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html ng-app="Unturned2">
 
 <head>
@@ -10,104 +10,57 @@
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <link href="/style/angular-material.css" rel="stylesheet">
-    <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="/lib/node-waves/waves.css" rel="stylesheet" />
-    <link href="/lib/animate-css/animate.css" rel="stylesheet" />
-    <link href="/lib/leaflet/leaflet.css" rel="stylesheet">
-    <link href="/style/materialize.css" rel="stylesheet">
-    <link href="/style/common.css" rel="stylesheet">
     <link href="/style/style.css" rel="stylesheet">
 </head>
-
-<body class="theme-green" ng-cloak>
+<body layout="column">
     <div class="page-loader-wrapper" ng-show="$root.finished">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Loading...</p>
-        </div>
+        <md-progress-circular md-diameter="70" md-mode="indeterminate"></md-progress-circular>
     </div>
     <div class="overlay"></div>
-    <nav class="navbar">
-        <div class="container-fluid" style="padding-right: 0px;">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="javascript:void(0)">{{ $root.config.title }}</a>
-            </div>
-        </div>
-    </nav>
-    <section>
-        <aside id="leftsidebar" class="sidebar">
-            <div class="bg-grey" style="box-shadow:4px 0px 4px 0px rgba(0, 0, 0, 0.5) inset">
-                <div class="row">
-                    <div class="image col-xs-2">
-                        <img ng-src="{{$root.profile.avatar}}" width="48" height="48" alt="User">
+    <md-toolbar layout="row" class="md-toolbar-tools">
+        <h1>{{ $root.config.title }}</h1>
+    </md-toolbar>
+
+    <div flex layout="row">
+
+            <md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp">
+
+
+              <md-list ng-controller="MenuController as vm">
+
+                    <md-list-item class="md-2-line">
+                    <img ng-src="{{$root.profile.avatar}}" width="48" height="48" class="md-avatar"/>
+                    <div class="md-list-item-text">
+                        <h3>{{$root.profile.userName}}</h3>
+                        <p>{{$root.profile.name}}</p>
                     </div>
-                    <div class="col-xs-8 m-t-5">{{$root.profile.userName}}<br><small>{{$root.profile.name}}</small></div>
-                    <div class="col-xs-2" style="top: 10px;right: 10px;cursor:pointer;">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                        <ul class="dropdown-menu pull-right">
-                            <li ng-hide="$root.loggedIn == true"><a href="/api/login" class=" waves-effect waves-block"><i class="material-icons">input</i>Sign In</a></li>
-                            <li ng-show="$root.loggedIn == true"><a href="/api/logout" class=" waves-effect waves-block"><i class="material-icons">input</i>Sign Out</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="menu">
-                <ul class="list" ng-controller="MenuController as vm">
-                    <li ng-repeat="item in vm.menu" ng-show="item.visible">
-                        <a href="" ng-click="$root.navigate(item)" ng-class="{'menu-toggle': item.children.length}">
-                            <i class="material-icons">{{ item.icon }}</i>
-                            <span>{{ item.title}}</span>
-                        </a>
-                        {{item.children.length}}
-                        <ul class="ml-menu" ng-show="item.children.length == 1">
-                            <li ng-repeat="item2 in item.children" ng-show="item2.visible">
-                                <a href="" ng-click="$root.navigate(item2,[item])" ng-class="{'menu-toggle': item2.children.length}">
-                                    <i class="material-icons">{{ item2.icon }}</i>
-                                    <span>{{ item2.title }}</span>
-                                </a>
-                                <ul class="ml-menu" ng-show="item2.children.length">
-                                    <li ng-repeat="item3 in item2.children" ng-show="item3.visible">
-                                        <a href="" ng-click="$root.navigate(item3,[item,item2])">
-                                            <i class="material-icons">{{ item3.icon}}</i>
-                                            <span>{{ item3.title}}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="legal">
-                <div class="copyright">
-                    &copy; 2018 <a href="">Sven Mawby</a>
-                </div>
-                <div class="version">
-                    <b>Version: </b> 1.0.0
-                </div>
-            </div>
-        </aside>
-    </section>
-    <section class="content">
-        <ol class="breadcrumb breadcrumb-bg-green" ng-show="$root.breadcrumbs.length">
-            <li ng-repeat="item in $root.breadcrumbs"><a ng-click="$root.navigate(item,$root.breadcrumbs,true)" href=""><i class="material-icons">{{ item.icon }}</i> {{ item.title }}</a></li>
-        </ol>
-        <div class="container-fluid">
-            <ng-view></ng-view>
-        </div>
-    </section>
+                            <md-menu class="md-secondary">
+                              <md-button class="md-icon-button">
+                                <md-icon >power_settings_new</md-icon>
+                              </md-button>
+                              <md-menu-content width="4">
+                                <md-menu-item ng-hide="$root.loggedIn == true" >
+                                        <md-button href='/api/login' md-no-ink class="md-primary">Login</md-button> 
+                                </md-menu-item>
+                                <md-menu-item ng-show="$root.loggedIn == true" >
+                                      <md-button href='/api/logout' md-no-ink class="md-primary">Logout</md-button>
+                                </md-menu-item>
+                              </md-menu-content>
+                            </md-menu>
+                        
+                          </md-list-item>
+
+                    <md-list-item ng-repeat="item in vm.menu" ng-show="item.visible" ng-click="$root.navigate(item)">
+                        <md-icon ng-bind="{{ item.icon }}"></md-icon>
+                        <p>{{ item.title}}</p>
+                    </md-list-item>
+              </md-list> 
+            </md-sidenav>
+            <md-content flex id="content"><ng-view></ng-view></md-content>
+            
+          </div>
+
     <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="/lib/node-waves/waves.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
     <script type="text/javascript" src="/lib/angular.min.js"></script>
@@ -118,9 +71,6 @@
     <script type="text/javascript" src="/lib/angular-messages.min.js"></script>
     <script type="text/javascript" src="/lib/angular-material.min.js"></script>
     <script type="text/javascript" src="/lib/angular-websocket.min.js"></script>
-    <script type="text/javascript" src="/lib/admin.js"></script>
-
-    <script type="text/javascript" src="/lib/leaflet/leaflet.js"></script>
 
     <script type="text/javascript" src="/src/app.js"></script>
     <script type="text/javascript" src="/src/controllers/menuController.js"></script>

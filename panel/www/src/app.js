@@ -10,8 +10,8 @@ app.config(function ($mdThemingProvider,$locationProvider, $routeProvider, $cont
 
     $mdThemingProvider
         .theme('default')
-        .primaryPalette('pink')
-        .accentPalette('orange')
+        .primaryPalette('green')
+        .accentPalette('light-green')
         .warnPalette('red');
 
         $routeProvider.when('/login/:token', {
@@ -48,9 +48,9 @@ app.config(function ($mdThemingProvider,$locationProvider, $routeProvider, $cont
             }
         }
     });
-}).constant("$MD_THEME_CSS", "");
+});//.constant("$MD_THEME_CSS", "")
 
-app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout', function ($rootScope, config, eventing, $location, $timeout) {
+app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout','$mdToast', function ($rootScope, config, eventing, $location, $timeout,$mdToast) {
     $rootScope.currentMenuItem = {};
     $rootScope.profile = { steamID: null, avatar: '/img/unknown.jpg', userName: "Guest" }
     $rootScope.loggedIn = false;
@@ -91,17 +91,25 @@ app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout', function (
             const session = JSON.parse(atob(jwt.split(".")[1]));
             eventing.connect();
             eventing.emit("connected",jwt);
+            eventing.on('stdout',function(a){
+                console.log(a);
+            }) 
+            eventing.on('stderr',function(a){
+                console.error(a);
+            }) 
+            eventing.on('connected',function(a){
+                console.log(a);
+            }) 
+
+            eventing.on("*", function (event,data) {
+                window.$mdToast = $mdToast;
+                $mdToast.show($mdToast.simple()
+                .textContent(event+": "+data)
+                .hideDelay(5000)
+                .position("bottom right"));
+            });
+
             $rootScope.profile = session;
         }
-
-        $(function () {
-            $.AdminBSB.browser.activate();
-            $.AdminBSB.leftSideBar.activate();
-            $.AdminBSB.navbar.activate();
-            $.AdminBSB.dropdownMenu.activate();
-            $.AdminBSB.input.activate();
-            $.AdminBSB.select.activate();
-            $rootScope.loading = false;
-        });
     });
 }]);

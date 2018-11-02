@@ -111,31 +111,29 @@ app.get('/api/config', function (req, res) {
 
 var io = require('socket.io')(server);
 io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
     socket.on('connected', function (token) {
       socket.user = jwt.verify(token,jtwSecret);
-      console.log("client connected",socket.user);
       if(socket.user == null) socket.close();
+      socket.emit("connected","Connected");
     });
   });
 if(process.platform !== "win32"){
-    const spawn = require('child_process').spawn;
-    const readline = require('readline');
-    const prc = spawn('/opt/unturned/U4Server.sh',['-rconport=3000'],{cwd:"/opt/unturned/", shell:true});
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
+    const child = require('child_process').spawn('/bin/bash',['-c','/opt/unturned/U4Server.sh -rconport=3000'],{cwd:"/opt/unturned/"});
     
-    prc.stdout.setEncoding('utf8');
-    prc.stdout.on('data', function (data) {
-        const str = data.toString()
-        const lines = str.split(/(\r?\n)/g);
-        console.log(lines.join(""));
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) { 
+        console.log("stdout",data); 
+        io.sockets.emit('stdout', data);
+    }); 
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', function(data) {
+        console.error("stderr",data); 
+        io.sockets.emit('stderr', data);
     });
-
-    prc.on('close', function (code) {
+    child.on('close', function (code) {
         console.log('process exit code ' + code);
         process.exit(code)
     });
 }
+
+///opt/unturned/U4/Saved/Logs/U4.log 
