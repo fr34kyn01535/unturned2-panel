@@ -1,5 +1,5 @@
 var app = angular.module('Unturned2', ['ngMaterial', 'ngRoute', 'ngSanitize','angular-script.js', 'ngWebSocket']);
-app.config(function ($mdThemingProvider,$locationProvider, $routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
+app.config(function ($mdThemingProvider,$httpProvider,$locationProvider, $routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
     app.register = {
         controller: $controllerProvider.register,
         directive: $compileProvider.directive,
@@ -8,6 +8,7 @@ app.config(function ($mdThemingProvider,$locationProvider, $routeProvider, $cont
         service: $provide.service
     };
 
+    $httpProvider.interceptors.push('authHttpInterceptor');
     $mdThemingProvider
         .theme('default')
         .primaryPalette('green')
@@ -72,8 +73,9 @@ app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout','$mdToast',
     }
 
     $rootScope.config = { title: 'Unturned II Dashboard' };
+    var jwt = localStorage.getItem("token");
+    $rootScope.token = jwt;
     config.then(function (config) {
-        var jwt = localStorage.getItem("token");
         if (!$location.path() || $location.path() == "/") {
             if (config.data.menuItems.length != 0) {
                 $rootScope.navigate(config.data.menuItems[0]);
@@ -113,10 +115,10 @@ app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout','$mdToast',
 
         $rootScope.stdout = "";
         eventing.on("log",function(data){
-            $rootScope.stdout = data;
+            $rootScope.log = data;
             $rootScope.$apply(function(){
                 $timeout(function(){
-                    $(".console").scrollTop($(".console")[0].scrollHeight);
+                    $(".console").scrollTop($(".console")[0] && $(".console")[0].scrollHeight);
                 })
             })
         });

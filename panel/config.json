@@ -1,0 +1,16 @@
+{
+    "title": "Unturned II Dashboard",
+    "menuItems": [{
+        "id": "home",
+        "icon": "home",
+        "title": "Home",
+        "view": "home",
+        "visible": true
+    }, {
+        "id": "test",
+        "icon": "build",
+        "title": "Test",
+        "view": "test",
+        "visible": true
+    }]
+}

@@ -13,6 +13,8 @@ function package::update_steamcmd() {
 function package::update_unturned() {
 	printf "Updating Unturned..\n"
 	package::get_steam_user
+	mkdir /opt/unturned/U4/Saved/Logs/ -p
+	touch /opt/unturned/U4/Saved/Logs/U4.log
 	/opt/steamcmd/steamcmd.sh +login "${STEAM_USERNAME}" "${STEAM_PASSWORD}" +force_install_dir "/opt/unturned" +app_update 730200 +exit
 }
 

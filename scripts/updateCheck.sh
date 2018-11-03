@@ -15,7 +15,8 @@ else
             echo New update found, exiting 
             echo $buildid
             echo $newbuildid
-            killall -9 U4Server*
+            echo $newbuildid > /opt/buildid
+            pkill U4Server*
         fi
     fi
 fi

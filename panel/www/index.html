@@ -17,8 +17,16 @@
         <md-progress-circular md-diameter="70" md-mode="indeterminate"></md-progress-circular>
     </div>
     <div class="overlay"></div>
-    <md-toolbar layout="row" class="md-toolbar-tools">
-        <h1>{{ $root.config.title }}</h1>
+    <md-toolbar class="md-hue-2 md-toolbar-tools">
+        <div class="md-toolbar-tools">
+            <h2 flex md-truncate>{{ $root.config.title }}</h2>
+            <md-button ng-hide="$root.loggedIn == true" href='/auth/login'>
+                Login
+            </md-button>
+            <md-button ng-show="$root.loggedIn == true" href='/api/logout'>
+                Logout
+            </md-button>
+        </div>
     </md-toolbar>
 
     <div flex layout="row">
@@ -34,20 +42,6 @@
                         <h3>{{$root.profile.userName}}</h3>
                         <p>{{$root.profile.name}}</p>
                     </div>
-                            <md-menu class="md-secondary">
-                              <md-button class="md-icon-button">
-                                <md-icon >power_settings_new</md-icon>
-                              </md-button>
-                              <md-menu-content width="4">
-                                <md-menu-item ng-hide="$root.loggedIn == true" >
-                                        <md-button href='/api/login' md-no-ink class="md-primary">Login</md-button> 
-                                </md-menu-item>
-                                <md-menu-item ng-show="$root.loggedIn == true" >
-                                      <md-button href='/api/logout' md-no-ink class="md-primary">Logout</md-button>
-                                </md-menu-item>
-                              </md-menu-content>
-                            </md-menu>
-                        
                           </md-list-item>
 
                     <md-list-item ng-repeat="item in vm.menu" ng-show="item.visible" ng-click="$root.navigate(item)">
@@ -76,6 +70,7 @@
     <script type="text/javascript" src="/src/controllers/menuController.js"></script>
     <script type="text/javascript" src="/src/factories/config.js"></script>
     <script type="text/javascript" src="/src/factories/eventing.js"></script>
+    <script type="text/javascript" src="/src/factories/authHttpInterceptor.js"></script>
     <script type="text/javascript" src="/src/services/profile.js"></script>
 </body>
 
