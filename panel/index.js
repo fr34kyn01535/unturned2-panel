@@ -8,6 +8,8 @@ var server;
 var enableSSL = process.env.DOMAIN && process.env.EMAIL;
 var domain = process.env.DOMAIN || "localhost";
 var address = (enableSSL ? "https://" : "http://") + domain;
+Tail = require('tail').Tail;
+
 if(enableSSL){
     console.log(process.env.DOMAIN, process.env.EMAIL)
     const glx = require('greenlock-express').create({
@@ -108,25 +110,34 @@ app.get('/api/config', function (req, res) {
             ],
         });
 });
-
+stdout = new Tail("/opt/unturned/U4/Saved/Logs/U4.log");
+stdout.on("line", function(data) {
+    io.sockets.emit('log', data);
+});
 var io = require('socket.io')(server);
 io.on('connection', function (socket) {
     socket.on('connected', function (token) {
-      socket.user = jwt.verify(token,jtwSecret);
-      if(socket.user == null) socket.close();
+        if(token) socket.user = jwt.verify(token,jtwSecret);
+      //if(socket.user == null) socket.close();
       socket.emit("connected","Connected");
+      socket.emit("stdout",stdout);
+      socket.emit("stderr",stderr);
     });
   });
+  var stdout = "";
+  var stderr = "";
 if(process.platform !== "win32"){
     const child = require('child_process').spawn('/bin/bash',['-c','/opt/unturned/U4Server.sh -rconport=3000'],{cwd:"/opt/unturned/"});
     
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) { 
+        stdout+=data.replace(/[^\x20-\x7E\n]+/g, "").trim();
         console.log("stdout",data); 
         io.sockets.emit('stdout', data);
     }); 
     child.stderr.setEncoding('utf8');
     child.stderr.on('data', function(data) {
+        stderr+=data.replace(/[^\x20-\x7E\n]+/g, "").trim();
         console.error("stderr",data); 
         io.sockets.emit('stderr', data);
     });
@@ -134,6 +145,7 @@ if(process.platform !== "win32"){
         console.log('process exit code ' + code);
         process.exit(code)
     });
+    
 }
 
 ///opt/unturned/U4/Saved/Logs/U4.log 

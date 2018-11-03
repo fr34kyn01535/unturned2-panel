@@ -52,7 +52,7 @@
 
                     <md-list-item ng-repeat="item in vm.menu" ng-show="item.visible" ng-click="$root.navigate(item)">
                         <md-icon ng-bind="item.icon"></md-icon>
-                        <p>{{ item.title}}</p>
+                        <p>{{ item.title }}</p>
                     </md-list-item>
               </md-list> 
             </md-sidenav>
@@ -71,7 +71,7 @@
     <script type="text/javascript" src="/lib/angular-messages.min.js"></script>
     <script type="text/javascript" src="/lib/angular-material.min.js"></script>
     <script type="text/javascript" src="/lib/angular-websocket.min.js"></script>
-
+    <script type="text/javascript" src="/lib/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="/src/app.js"></script>
     <script type="text/javascript" src="/src/controllers/menuController.js"></script>
     <script type="text/javascript" src="/src/factories/config.js"></script>

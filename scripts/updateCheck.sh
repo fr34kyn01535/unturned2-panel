@@ -12,7 +12,9 @@ else
     else
         buildid=$(</opt/buildid)
         if [ "$buildid" -ne "$newbuildid" ]; then 
-            echo New update found, exiting
+            echo New update found, exiting 
+            echo $buildid
+            echo $newbuildid
             killall -9 U4Server*
         fi
     fi

@@ -1,4 +1,4 @@
-var app = angular.module('Unturned2', ['ngMaterial', 'ngRoute', 'angular-script.js', 'ngWebSocket']);
+var app = angular.module('Unturned2', ['ngMaterial', 'ngRoute', 'ngSanitize','angular-script.js', 'ngWebSocket']);
 app.config(function ($mdThemingProvider,$locationProvider, $routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
     app.register = {
         controller: $controllerProvider.register,
@@ -89,27 +89,37 @@ app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout','$mdToast',
         $rootScope.loggedIn = (jwt != null);
         if ($rootScope.loggedIn) {
             const session = JSON.parse(atob(jwt.split(".")[1]));
+            $rootScope.profile = session;
+        }
             eventing.connect();
             eventing.emit("connected",jwt);
-            eventing.on('stdout',function(a){
-                console.log(a);
-            }) 
-            eventing.on('stderr',function(a){
-                console.error(a);
-            }) 
             eventing.on('connected',function(a){
                 console.log(a);
             }) 
 
             eventing.on("*", function (event,data) {
-                window.$mdToast = $mdToast;
-                $mdToast.show($mdToast.simple()
+                console.log(event+": "+data);
+                /*$mdToast.show($mdToast.simple()
                 .textContent(event+": "+data)
                 .hideDelay(5000)
-                .position("bottom right"));
+                .position("bottom right"));*/
             });
 
-            $rootScope.profile = session;
-        }
+            
+
+        /*function sanitize(d){
+            return d.trim().replace(/(\[0m|\[  0\])/g,"").replace(/\n/g,"<br />\n").replace(/^(?:\[([\d]*)m)([^\n]*)$/gm, '<span class="color-$1">$2</span>');
+        }*/
+
+        $rootScope.stdout = "";
+        eventing.on("log",function(data){
+            $rootScope.stdout+= data;
+            $rootScope.$apply(function(){
+                $timeout(function(){
+                    console.log("test");
+                    $(".console").scrollTop($(".console")[0].scrollHeight);
+                })
+            })
+        });
     });
 }]);
