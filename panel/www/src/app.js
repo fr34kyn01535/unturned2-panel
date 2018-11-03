@@ -113,10 +113,9 @@ app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout','$mdToast',
 
         $rootScope.stdout = "";
         eventing.on("log",function(data){
-            $rootScope.stdout+= data;
+            $rootScope.stdout = data;
             $rootScope.$apply(function(){
                 $timeout(function(){
-                    console.log("test");
                     $(".console").scrollTop($(".console")[0].scrollHeight);
                 })
             })

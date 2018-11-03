@@ -4,11 +4,12 @@ const passport = require("passport");
 const uuid = require("uuid");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const Tail = require('tail').Tail;
 var server;
 var enableSSL = process.env.DOMAIN && process.env.EMAIL;
 var domain = process.env.DOMAIN || "localhost";
 var address = (enableSSL ? "https://" : "http://") + domain;
-Tail = require('tail').Tail;
+
 
 if(enableSSL){
     console.log(process.env.DOMAIN, process.env.EMAIL)
@@ -111,8 +112,10 @@ app.get('/api/config', function (req, res) {
         });
 });
 stdout = new Tail("/opt/unturned/U4/Saved/Logs/U4.log");
+var log = "";
 stdout.on("line", function(data) {
-    io.sockets.emit('log', data);
+    log=+ data + "<br />";
+    io.sockets.emit('log', log);
 });
 var io = require('socket.io')(server);
 io.on('connection', function (socket) {
