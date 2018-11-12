@@ -13,14 +13,15 @@ function package::update_steamcmd() {
 function package::update_unturned() {
 	printf "Updating Unturned..\n"
 	package::get_steam_user
-	mkdir /opt/unturned/U4/Saved/Logs/ -p
-	touch /opt/unturned/U4/Saved/Logs/U4.log
 	/opt/steamcmd/steamcmd.sh +login "${STEAM_USERNAME}" "${STEAM_PASSWORD}" +force_install_dir "/opt/unturned" +app_update 730200 +exit
 }
 
 function package::start_server() {
 	printf "Starting server..\n"
-	chmod 777 /opt/unturned/U4Server.sh
+	cd /opt/unturned/
+	touch /var/log/unturned.log
+	chmod 777 U4Server.sh
+	sleep 5 && ./U4Server.sh -rconport=3000 > /var/log/unturned.log &
 	cd /opt/panel/ && node index.js
 }
 

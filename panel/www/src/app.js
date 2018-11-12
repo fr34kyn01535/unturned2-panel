@@ -18,14 +18,16 @@ app.config(function ($mdThemingProvider,$httpProvider,$locationProvider, $routeP
         $routeProvider.when('/login/:token', {
             templateUrl:function(rd){
                 localStorage.setItem("token",atob(rd.token));
-            },
-            redirectTo: function(){ return "home"; }
+                location.reload();
+            }, 
+            redirectTo: function(){ return "/"; }
         });
         $routeProvider.when('/logout', {
             templateUrl:function(rd){
                 localStorage.removeItem("token");
+                location.reload();
             },
-            redirectTo: function(){ return "home"; }
+            redirectTo: function(){ return "/"; }
         });
     
     $routeProvider.when('/:view', {

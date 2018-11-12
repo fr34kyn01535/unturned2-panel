@@ -9,8 +9,7 @@ var server;
 var enableSSL = process.env.DOMAIN && process.env.EMAIL;
 var domain = process.env.DOMAIN || "localhost";
 var address = (enableSSL ? "https://" : "http://") + domain;
-
-if(enableSSL){
+if(enableSSL){ 
     console.log(process.env.DOMAIN, process.env.EMAIL)
     const glx = require('greenlock-express').create({
         server: 'https://acme-v02.api.letsencrypt.org/directory',
@@ -58,8 +57,8 @@ app.get('/auth/login', passport.authenticate('steam'));
 app.use(function(req, res, next){ 
     const auth = req.get("authorization");
     var token;
-    if(auth) token = new Buffer(auth.split(" ").pop(), "base64").toString("utf8");
-    if(token) req.user = jwt.verify(token, jtwSecret);
+    if(auth != null) token = new Buffer(auth.split(" ").pop(), "base64").toString("utf8");
+    if(token != null) req.user = jwt.verify(token, jtwSecret);
     next();
 });
 
@@ -77,9 +76,15 @@ app.get('/auth', passport.authenticate('steam', { failureRedirect: '/api/login' 
 
 var io = require('socket.io')(server);
 
+app.use(function errorHandler(err, req, res, next) {
+    console.error(err);
+    res.status(500).end();
+  });
 var handlers = [];
 function addHandler(directory){
+    console.log("adding" ,directory);
     fs.readdirSync(directory).forEach(function(handler) {
+        console.log("adding" ,path.resolve(directory,path.parse(handler).name));
         handlers.push(require(path.resolve(directory,path.parse(handler).name)));
     });
 };
