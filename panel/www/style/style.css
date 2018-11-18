@@ -28,3 +28,7 @@
 .console .color-33{
     color:yellow;
 }
+
+.console span{
+    color:blue;
+}

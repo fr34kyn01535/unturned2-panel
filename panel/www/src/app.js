@@ -116,8 +116,17 @@ app.run(['$rootScope', 'config', 'eventing', '$location', '$timeout','$mdToast',
         }*/
 
         $rootScope.stdout = "";
+        $rootScope.log = "";
         eventing.on("log",function(data){
-            $rootScope.log = data;
+            $rootScope.log += data;
+            $rootScope.$apply(function(){
+                $timeout(function(){
+                    $(".console").scrollTop($(".console")[0] && $(".console")[0].scrollHeight);
+                })
+            })
+        });
+        eventing.on("rcon.log",function(data){
+            $rootScope.log += '<span>'+data+"</span>";
             $rootScope.$apply(function(){
                 $timeout(function(){
                     $(".console").scrollTop($(".console")[0] && $(".console")[0].scrollHeight);

@@ -10,8 +10,6 @@ ADD scripts /opt/scripts
 ADD panel /opt/panel
 RUN chown unturned:unturned -R /opt
 RUN chmod 777 /opt/scripts/*
-RUN touch /var/log/unturned.log
-RUN chmod 777 /var/log/unturned.log
 USER unturned
 
 CMD [ "/bin/bash", "-c", "/opt/scripts/bootstrap.sh" ]

@@ -19,9 +19,10 @@ function package::update_unturned() {
 function package::start_server() {
 	printf "Starting server..\n"
 	cd /opt/unturned/
-	touch /var/log/unturned.log
 	chmod 777 U4Server.sh
-	sleep 5 && ./U4Server.sh -rconport=3000 > /var/log/unturned.log &
+	mkdir -p ./U4/Saved/Logs/
+	touch ./U4/Saved/Logs/U4.log
+	sleep 5 && ./U4Server.sh -rconport=${RCON_PORT} > /dev/null &
 	cd /opt/panel/ && node index.js
 }
 
