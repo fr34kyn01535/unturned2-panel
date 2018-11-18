@@ -3,6 +3,6 @@ session.key
 node_modules
 *.js
 *.js.map
-!www\*.js
-!.view.js
-!.view.html
+!panel/www/**/*.js
+!*.view.js
+!*.view.html
