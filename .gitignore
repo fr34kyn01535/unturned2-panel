@@ -1,3 +1,7 @@
 session.key
 .env
 node_modules
+panel/lib/**/*.js
+panel/lib/**/*.map
+!.view.js
+!view.html
