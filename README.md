@@ -10,7 +10,7 @@ git clone https://github.com/fr34kyn01535/unturned2-panel.git
 cd unturned2-panel
 npm install #install dependencies
 tsc #transpile
-node index.js run #start
+node cli.js run #start
 ```
 
 ## production
