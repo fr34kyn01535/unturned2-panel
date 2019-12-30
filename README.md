@@ -32,3 +32,12 @@ DOMAIN=localhost #used in steam login callback
 HTTPS_PORT=2443
 EMAIL=
 ```
+
+## features
+- [x] extensible websocket pubsub eventing
+- [x] extensible route registration
+- [x] extensible view concept (angular view / model)
+- [x] steam login
+- [x] auto ssl endpoints (letsencrypt certificate retrieval)
+- [ ] Unturned 2 log viewer (in progress)
+- [ ] Unturned 2 rcon interaction (in progress)
