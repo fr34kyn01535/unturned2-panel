@@ -10,13 +10,14 @@ git clone https://github.com/fr34kyn01535/unturned2-panel.git
 cd unturned2-panel
 npm install #install dependencies
 tsc #transpile
-node index.js run
+node index.js run #start
 ```
 
 ##production
 ```
 npm init
 npm install unturned2-panel --save
+node index.js run #start
 ```
 Install plugins just by installing their corresponding npm package (for example [unturned2-panel-ext-example-plugin](https://github.com/fr34kyn01535/unturned2-panel-ext-example-plugin))
 ```
