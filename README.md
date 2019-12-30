@@ -3,7 +3,7 @@
 
 Tested with Node v10.16.3 & tsc Version 3.5.3
 
-##dev
+## dev
 
 ```
 git clone https://github.com/fr34kyn01535/unturned2-panel.git
@@ -13,7 +13,7 @@ tsc #transpile
 node index.js run #start
 ```
 
-##production
+## production
 ```
 npm install unturned2-panel --save
 node ./node_modules/unturned2-panel/cli.js run #start
@@ -23,7 +23,7 @@ Install plugins just by installing their corresponding npm package (for example 
 npm install unturned2-panel-ext-example-plugin --save
 ```
 
-##configuration
+## configuration
 ```
 HTTP_PORT=2080
 STEAM_API_KEY=ASASASASASSASASASASASAS #required for steam login (retrieve at https://steamcommunity.com/dev/apikey)
