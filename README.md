@@ -15,13 +15,12 @@ node index.js run #start
 
 ##production
 ```
-npm init
 npm install unturned2-panel --save
-node index.js run #start
+node ./node_modules/unturned2-panel/index.js run #start
 ```
 Install plugins just by installing their corresponding npm package (for example [unturned2-panel-ext-example-plugin](https://github.com/fr34kyn01535/unturned2-panel-ext-example-plugin))
 ```
-npm install unturned2-panel-ext-example-plugin
+npm install unturned2-panel-ext-example-plugin --save
 ```
 
 ##configuration
