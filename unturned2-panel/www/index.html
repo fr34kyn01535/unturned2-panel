@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="Unturned2">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title ng-bind="$root.config.title">Unturned II Dashboard</title>
+
+    <link href="//fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <link href="/style/angular-material.css" rel="stylesheet">
+    <link href="/style/style.css" rel="stylesheet">
+</head>
+<body layout="column">
+    <div class="page-loader-wrapper" ng-show="$root.finished">
+        <md-progress-circular md-diameter="70" md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div class="overlay"></div>
+    <md-toolbar class="md-hue-2 md-toolbar-tools">
+        <div class="md-toolbar-tools">
+            <h2 flex md-truncate>{{ $root.config.title }}</h2>
+            <md-button ng-hide="$root.loggedIn == true" href='/auth/login'>
+                Login
+            </md-button>
+            <md-button ng-show="$root.loggedIn == true" href='/logout'>
+                Logout
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <div flex layout="row">
+
+            <md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp">
+
+
+              <md-list ng-controller="MenuController as vm">
+
+                    <md-list-item class="md-2-line">
+                    <img ng-src="{{$root.profile.avatar}}" width="48" height="48" class="md-avatar"/>
+                    <div class="md-list-item-text">
+                        <h3>{{$root.profile.userName}}</h3>
+                        <p>{{$root.profile.name}}</p>
+                    </div>
+                          </md-list-item>
+
+                    <md-list-item ng-repeat="item in vm.menu" ng-show="item.visible" ng-click="$root.navigate(item)">
+                        <md-icon ng-bind="item.icon"></md-icon>
+                        <p>{{ item.title }}</p>
+                    </md-list-item>
+              </md-list> 
+            </md-sidenav>
+            <md-content flex id="content"><ng-view></ng-view></md-content>
+            
+          </div>
+
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="/lib/angular.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-route.js"></script>
+    <script type="text/javascript" src="/lib/angular-script.js"></script>
+    <script type="text/javascript" src="/lib/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-aria.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-messages.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-material.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-websocket.min.js"></script>
+    <script type="text/javascript" src="/lib/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/src/app.js"></script>
+    <script type="text/javascript" src="/src/controllers/menuController.js"></script>
+    <script type="text/javascript" src="/src/factories/config.js"></script>
+    <script type="text/javascript" src="/src/factories/eventing.js"></script>
+    <script type="text/javascript" src="/src/factories/authHttpInterceptor.js"></script>
+    <script type="text/javascript" src="/src/services/profile.js"></script>
+</body>
+
+</html>

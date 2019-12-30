@@ -4,8 +4,8 @@ EXPOSE 7777/udp 2080/tcp 2443/tcp
 
 RUN apt-get update && apt-get -y install lib32gcc1 unzip wget pcregrep
 
-RUN groupadd -g 999 unturned && \
-    useradd -m -r -u 999 -g unturned unturned
+RUN groupadd -g 1999 unturned && \
+    useradd -m -r -u 1999 -g unturned unturned
 ADD scripts /opt/scripts
 ADD panel /opt/panel
 RUN chown unturned:unturned -R /opt

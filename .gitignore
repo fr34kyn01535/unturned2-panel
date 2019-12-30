@@ -1,8 +1,6 @@
 session.key
 .env
 node_modules
-*.js
-*.js.map
-!panel/www/**/*.js
-!*.view.js
-!*.view.html
+#*.js
+#*.js.map
+#!unturned2-panel/www/**/*.js

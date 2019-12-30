@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/index.js",
+            "env": {
+                "DOMAIN" : "localhost",
+                "HTTP_PORT" : "2080",
+                "HTTPS_PORT" : "2443",
+                "STEAM_API_KEY": "XYZXYZXYZXYZXYZXYZXYZXYZXYZXYZXYZXYZ"
+            }
+        }
+    ]
+}
