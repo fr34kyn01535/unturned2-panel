@@ -15,3 +15,9 @@ or
 npm init
 npm install unturned2-panel --save
 ```
+
+
+Install plugins just by installing their corresponding npm package (for example [unturned2-panel-ext-example-plugin](https://github.com/fr34kyn01535/unturned2-panel-ext-example-plugin))
+```
+npm install unturned2-panel-ext-example-plugin
+```
