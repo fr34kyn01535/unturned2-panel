@@ -6,6 +6,7 @@
             "request": "launch",
             "name": "Launch Program",
             "cwd": "${workspaceFolder}",
+            "args": ["run"],
             "program": "${workspaceFolder}/index.js",
             "env": {
                 "DOMAIN" : "localhost",
