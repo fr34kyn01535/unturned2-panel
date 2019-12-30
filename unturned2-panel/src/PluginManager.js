@@ -4,6 +4,9 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 class PluginRegistration {
+    constructor(path) {
+        this.path = path;
+    }
 }
 exports.PluginRegistration = PluginRegistration;
 class ViewRegistration {
@@ -80,21 +83,22 @@ class PluginManager {
         });
     }
     loadPlugins() {
-        //load all plugins
-        var coreRegistration = new PluginRegistration();
-        coreRegistration.path = "./Core/CorePlugin";
-        this.plugins.push(coreRegistration);
-        var exampleRegistration = new PluginRegistration();
-        exampleRegistration.path = "C:/Users/fr34kyn01535/Documents/GitHub/Unturned2/unturned2-panel-plugin-example";
-        this.plugins.push(exampleRegistration);
-        //add node_module registrations
-        //
-        this.plugins.forEach(plugin => {
-            plugin.instance = new (require(plugin.path).default);
-            plugin.name = plugin.instance.name;
+        var that = this;
+        this.plugins.push(new PluginRegistration("./Core/CorePlugin"));
+        fs.readdir(path.resolve(__dirname, "../node_modules/"), function (err, items) {
+            if (err)
+                console.error("Failed to load plugins: " + err);
+            items.filter(item => item.indexOf("unturned2-panel-ext-") == 0).forEach(item => {
+                console.log("Loading " + item);
+                that.plugins.push(new PluginRegistration(item));
+            });
+            that.plugins.forEach(plugin => {
+                plugin.instance = new (require(plugin.path).default);
+                plugin.name = plugin.instance.name;
+            });
+            that.registerRoutes();
+            that.plugins.forEach(plugin => plugin.instance.load());
         });
-        this.registerRoutes();
-        this.plugins.forEach(plugin => plugin.instance.load());
     }
     getViews() {
         var views = new Array();

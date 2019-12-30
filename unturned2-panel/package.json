@@ -18,7 +18,6 @@
     "redirect-https": "^1.3.0",
     "socket.io": "^2.1.1",
     "tail": "^2.0.1",
-    "unturned2-api": "file:api",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
